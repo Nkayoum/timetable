@@ -1,16 +1,16 @@
 //QUESTION 3
-CREATE VIEW Vue AS
-SELECT DISTINCT C.codeCours, T.jourCoursDate,T. TRANCHE,C.VOLUMEH FROM Cours C
+CREATE VIEW vue AS 
+SELECT DISTINCT C.codeCours, T.jourCoursDate  FROM Cours C
 JOIN Typehoraire T
 ON C.codeCours= T.crsCodeCours
 JOIN Jourcours J
 ON J.dateJourCours=T.jourCoursDate
 JOIN Coursdeclasse cls
-ON T.crsCodeCours=cls.crsCodeCours
+ON  T.crsCodeCours=cls.crsCodeCours
 JOIN Classe Cl
 ON cl.specialiteNomSpec=cls.classSpecialiteNomspec
-WHERE T.jourCoursDate
- IN ('lundi','mardi','mercredi','jeudi','vendredi','samedi') AND cls.classNiveauidNiveau=001;
+WHERE T.jourCoursDate 
+IN ('lundi','mardi','mercredi','jeudi','vendredi','samedi');
 
 //QUESTION4
 alter table etudiant add password varchar(50);
@@ -36,7 +36,7 @@ JOIN Jourcours j
 ON J.dateJourCours=T.jourCoursDate
 JOIN Coursdeclasse cd
 ON  T.crsCodeCours=cd.crsCodeCours
-JOIN Classe ce
+JOIN Classece
 ON ce.specialiteNomSpec=cd.classSpecialiteNomspec
 INNER JOIN ClassePeriodeacademique ca
 ON C.periodeAcademiqueIdTrim=ca.PERIODEACADEMIQUEIDTRIM
