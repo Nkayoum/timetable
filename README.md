@@ -13,7 +13,11 @@ WHERE T.jourCoursDate
  IN ('lundi','mardi','mercredi','jeudi','vendredi','samedi') AND cls.classNiveauidNiveau=001;
 
 //QUESTION4
-SELECT courCodeCours FROM Etudiantdeclasse WHERE etudiantMatricule =&matricule;
+alter table etudiant add password varchar(50);
+update etudiant set password = ora_hash(matricule) where matricule = valeur;
+
+alter table enseignants add password varchar(50);
+update enseignants set password = ora_hash(matricule) where matricule = valeur;
 
 //QUESTION 5
 SET ECHO OFF
