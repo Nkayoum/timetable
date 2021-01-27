@@ -13,36 +13,38 @@ WHERE T.jourCoursDate
 IN ('lundi','mardi','mercredi','jeudi','vendredi','samedi');
 
 //QUESTION4
-alter table etudiant add password varchar(50);
-update etudiant set password = ora_hash(matricule) where matricule = valeur;
+alter table etudiant 
+add password varchar(10);
+update etudiant set password = ora_hash(matricule) 
+where matricule = valeur;
 
-alter table enseignants add password varchar(50);
-update enseignants set password = ora_hash(matricule) where matricule = valeur;
+alter table enseignants 
+add password varchar(10);
+update enseignants set password = ora_hash(matricule)
+where matricule = valeur;
 
 //QUESTION 5
-SET ECHO OFF
-SET MARKUP HTML ON SPOOL ON
-SPOOL emploi_temps_TIPAM2.HTML
-SELECT DISTINCT T.jourCoursDate as jours ,
-                  C.intituleCourt ||'('||C.codeCours||')' as cours ,
-                    C.credits as credits_cours,
-                    'trimestre'|| C.periodeAcademiqueIdTrim  as periode_trimestrielle,
-                    ce.specialiteNomSpec || cd.classNiveauidNiveau as specialite,
-                    T.tranche ||'heures' as tranche_horaire
+SET MARKUP HTML ON SPOOL ON PREFORMAT OFF ENTMAP ON -
+HEAD "<TITLE>Department Report</TITLE> -
+<STYLE type='text/css'> -
+<!-- BODY {background: #DCDFFF} --> -
+</STYLE>" –
+ BODY "TEXT='#000000'" –
+ TABLE "WIDTH='50%' BORDER='10'"
+SPOOL EmploieDeTempsHTML.html
+SELECT DISTINCT  T.jourCoursDate, C.VOLUMEH, C.syllabus 
 FROM Cours C
 JOIN Typehoraire T
-ON C.codeCours= T.crsCodeCours
-JOIN Jourcours j
+ON C.syllabus= T.crsCodeCours
+JOIN Jourcours J
 ON J.dateJourCours=T.jourCoursDate
-JOIN Coursdeclasse cd
-ON  T.crsCodeCours=cd.crsCodeCours
-JOIN Classece
-ON ce.specialiteNomSpec=cd.classSpecialiteNomspec
-INNER JOIN ClassePeriodeacademique ca
-ON C.periodeAcademiqueIdTrim=ca.PERIODEACADEMIQUEIDTRIM
-WHERE ce.specialiteNomSpec='TIPAM'
-AND   cd.classNiveauidNiveau=002
-ORDER BY T.jourCoursDate ASC;
+JOIN Coursdeclasse cls
+ON T.crsCodeCours=cls.crsCodeCours
+JOIN Classe Cla
+ON cla.specialiteNomSpec=cls.classSpecialiteNomspec
+JOIN Etudiantdeclasse et 
+on cls.crsCodeCours=et.COURCODECOURS
+JOIN ETUDIANT pp 
+ON pp.MATRICULE=et.ETUDIANTMATRICULE
+WHERE  et.ETUDIANTMATRICULE=&Matricule AND PASSWORD=ora_hash(&Password);
 SPOOL OFF
-SET MARKUP HTML OFF
-SET ECHO ON
